@@ -20,7 +20,8 @@ io.on("connection", socket => {
     // 链接
     console.log('a user connected');
     updateUserName();
-    // 存储用户名
+
+    // 存储用户输入的用户名
     let userName = '';
 
     // 登录 Login
