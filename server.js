@@ -6,7 +6,7 @@ const server = require("http").createServer(app);
 // 创建服务器
 const io = require("socket.io").listen(server).sockets;
 
-// 获得页面
+// 获得页面 - xiang
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/index.html");
 })
@@ -28,7 +28,7 @@ io.on("connection", socket => {
         if (name.trim().length === 0) {
             return;
         }// 掐头去尾，判断名字输入是否为空
-        if (connectedUser.indexOf(name) > -1) {
+        else if (connectedUser.indexOf(name) > -1) {
             socket.emit('sameName');
             isCreateUser = false;
             return;
@@ -49,12 +49,14 @@ io.on("connection", socket => {
         if (msg.trim().length === 0) {
             return;
         }
-        // console.log(msg);
-        // 输出消息
-        io.emit('output message', {
-            name: userName,
-            msg: msg
-        });
+        else {
+            // console.log(msg);
+            // 输出消息
+            io.emit('output message', {
+                name: userName,
+                msg: msg
+            });
+        }
     });
 
     // 断开链接--刷新页面
