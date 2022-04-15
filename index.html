@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charser=utf-8">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        body {
+            background-color: #616161;
+        }
+
+        #botww {
+            position: fixed;
+            bottom: 0px;
+        }
+
+        #login-col {
+            position: relative;
+            top: 50px;
+        }
+
+        .input-field input[type=text]:focus+label,
+        .materialize-textarea:focus:not([readonly])+label {
+            color: #616161 !important;
+        }
+
+        .input-field input[type=text]:focus,
+        .materialize-textarea:focus:not([readonly]) {
+            border-bottom: 1px solid #616161 !important;
+            box-shadow: 0 1px 0 0 #616161 !important;
+        }
+    </style>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <title>--在线匿名聊天室--</title> -->
+    <title>",>X"@[\,#*C=R"J-1%G/*\"E"</title>
+</head>
+
+<body>
+    <!-- 顶部导航栏 -->
+    <nav>
+        <div class="nav-wrapper grey darken-3">
+            <a href="#" class="brand-logo center">--- SCP Foundation ---</a>
+        </div>
+    </nav>
+
+    <!-- 登录主体 -->
+    <div id="login-col" class="row grey darken-2" style="display: block">
+        <!-- 登录 -->
+        <div class="col s2"></div>
+        <!-- 登录页面 -->
+        <div class="col s8">
+            <div class="card">
+                <div class="card-content">
+                    <!-- 指引标题 -->
+                    <span class="card-title brown-text text-darken-4">Welcome to Site-██</span>
+                    <!-- 登录表单 -->
+                    <!-- login-form -->
+                    <form id="login-form">
+                        <!-- 键入昵称 -->
+                        <div class="input-field">
+                            <input type="text" id="name">
+                            <label for="name" class="atcive">Nickname</label>
+                        </div>
+
+                        <!-- 发送按钮 -->
+                        <div class="right-align">
+                            <!-- 按钮 + 文字 -->
+                            <button class="btn waves-effect waves-light btn-small grey darken-3" type="submit"
+                                name="action">let's
+                                Secret chat!
+
+                                <!-- 图标 -->
+                                <i class="large material-icons right">chat</i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col s2"></div>
+    </div>
+
+
+    <!-- 交流 -->
+    <div id="chat-col" class="row grey darken-2" style="display: none">
+
+        <!-- 连接的用户表单 -->
+        <div class="col s4">
+            <!-- 左侧登录名单 -->
+            <h3 class=" flow-text center grey-text text-lighten-4">D级人员名单</h3>
+            <!-- 滚动条 -->
+            <div class="progress grey darken-1">
+                <div class="indeterminate grey darken-3"></div>
+            </div>
+            <!-- user-list -->
+            <ul id="user-list" class="collection grey-text text-lighten-4"></ul>
+        </div>
+
+        <!-- 消息发送界面 -->
+        <div class="col s8">
+            <div class="card grey darken-3">
+                <!-- 聊天内容界面 -->
+                <!-- messages -->
+                <div id="messages" class="card-content white-text"> </div>
+
+                <!-- 输入框界面 -->
+                <div class="card-action white">
+                    <!-- 插入表单 -->
+                    <!-- message-form -->
+                    <form id="message-form">
+                        <!-- 输入文字部分 -->
+                        <div class="input-field grey-text text-darken-3">
+                            <!-- 画了个写文字的横线 -->
+                            <textarea type="text" id="textarea"
+                                class="materialize-textarea grey-text text-darken-3"></textarea>
+                            <!-- 输入框 标题 -->
+                            <label class="active" for="textarea">MESSAGE</label>
+                        </div>
+                        <!-- 发送按钮 -->
+                        <div class="right-align">
+                            <!-- 按钮 + 文字 -->
+                            <button class="btn waves-effect waves-light btn-small grey darken-3" type="submit"
+                                name="action">SEND
+                                <!-- 图标 -->
+                                <i class="large material-icons right">rss_feed</i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 滚动条 -->
+    <div id="botww" class="progress grey darken-1">
+        <div class="indeterminate grey darken-3"></div>
+    </div>
+
+
+    <!--JavaScript at end of body for optimized loading-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <!-- socket.io -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script>
+        (function () {
+            // 获取各个需要操作的元素
+            const loginForm = document.getElementById('login-form')
+            const messageForm = document.getElementById('message-form')
+            const messages = document.getElementById('messages')
+            const userList = document.getElementById('user-list')
+            const loginCol = document.getElementById('login-col')
+            const chatCol = document.getElementById('chat-col')
+
+            // 连接到 socket.io
+            var socket = io({ 'timeout': 5000, 'connect timeout': 5000 });
+
+            // 检查是否 成功连接 查socket是否存在
+            if (socket !== undefined) {
+                console.log('Connected to socket...')
+            }
+
+            // 监听更新表单
+            socket.on('loadUser', uesers => {
+                userList.innerHTML = ''; //每次刷新都把列表置空，就重新刷新
+                // 添加名单
+                uesers.forEach(user => {
+                    var userLi = document.createElement('li');
+                    userLi.setAttribute('class', "collection-item grey darken-1");
+                    userLi.innerHTML = `<h6 class="center">${user}</h6>`;
+                    userList.appendChild(userLi);
+                    userList.insertBefore(userLi, userList.lastChild);
+                });
+            });
+
+            // 提交表单
+            loginForm.addEventListener('submit', e => {
+                e.preventDefault(); //单击“提交”按钮，阻止其刷新页面 
+                const userName = document.getElementById('name').value; //获取用户输入的名字
+                // 发送登录信息  login是自己起的名字
+                socket.emit('login', userName, () => {
+                    loginCol.style = "display: none";
+                    chatCol.style = "display:block";
+
+                    // 登录之后发送欢迎消息
+                    var message = document.createElement('p'); //创建一个字段<p>
+                    message.setAttribute('class', 'center blue-grey-text text-lighten-2')
+                    message.textContent = "Welcome「 " + userName + " 」joined Chat!";
+                    messages.insertBefore(message, messages.lastElementChild);
+                });
+            });
+
+            // 重名提示
+            socket.on('sameName', function () {
+                M.toast({ html: '嘿，你输入了重复的名字！' });
+            });
+
+            // 提交消息
+            messageForm.addEventListener('submit', e => {
+                e.preventDefault(); //单击“提交”按钮，阻止其刷新页面
+                const msg = document.getElementById('textarea').value;
+                document.getElementById('textarea').value = '';
+                socket.emit('chat message', msg);
+            });
+
+            // 显示信息
+            socket.on('output message', data => {
+                var message = document.createElement('h6');
+                message.setAttribute('style', 'word-break:break-all'); //自动换行
+                message.textContent = data.name + " : " + data.msg;
+                messages.appendChild(message);
+                messages.insertBefore(message, messages.lastChild);
+            });
+
+        })();// 匿名函数
+    </script>
+</body>
+
+</html>
