@@ -173,7 +173,7 @@
                     var userLi = document.createElement('li');
                     userLi.setAttribute('class', "collection-item grey darken-1");
                     userLi.innerHTML = `<h6 class="center">${user}</h6>`;
-                    userList.appendChild(userLi);
+                    userList.appendChild(userLi); //往下建立表单
                     userList.insertBefore(userLi, userList.lastChild);
                 });
             });
